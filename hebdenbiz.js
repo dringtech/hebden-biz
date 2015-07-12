@@ -62,7 +62,7 @@ loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
                                 style: function (feature) {
                                     return {
                                         color: 'blue',
-                                        radius: 1
+                                        radius: 2
                                     };
                                 },
                                 onEachFeature: function ( feature, layer ) {
