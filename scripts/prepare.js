@@ -18,21 +18,23 @@ var biz = active.map(function(x) {
     }
 });
 
-
-postcodesWithBiz = 
-    Object.keys(codepoint)
+postcodesWithBiz = {
+    type: "featureCollection",
+    features: Object.keys(codepoint)
         .filter(function(x) {return 'count' in codepoint[x].properties;})
-        .map(function(x) {return codepoint[x];});
+        .map(function(x) {return codepoint[x];})
+};
 
-locatedBiz = 
-    active
-        .filter(function(x) {return x.postcode in codepoint;})
+locatedBiz = {
+    type: "featureCollection",
+    features: active.filter(function(x) {return x.postcode in codepoint;})
         .map(function(x) {
             var feature = JSON.parse(JSON.stringify(codepoint[x.postcode]));
             feature.geometry.coordinates.map(function(x) {return x + Math.random(0.1);});
             feature.properties = x;
             return feature;
-    });
+    })
+};
 
 var fs = require('fs');
 var errHandler = function errHandler(err) { if (err) throw err; };
