@@ -43,7 +43,7 @@ var geojsonMarkerOptions = {
     opacity: 1,
     fillOpacity: 0.8
 };
-loadGeoJsonLayer('./datasets/bizDist.geojson', {
+loadGeoJsonLayer('./layers/bizDist.geojson', {
                                 style: function (feature) {
                                     return {
                                         color: 'green',
