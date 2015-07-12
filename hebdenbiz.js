@@ -5,7 +5,7 @@ var map = new L.Map("map", {
 });
 map.addLayer(layer);
 
-var loadGeoJsonLayer = function(src, options) {
+var loadGeoJsonLayer = function(src, target, options) {
     var xhr = new XMLHttpRequest();
 
     xhr.open('get', src, true);
@@ -18,13 +18,15 @@ var loadGeoJsonLayer = function(src, options) {
             if (status == 200) {
                 console.log("it success!");
                 data = JSON.parse(xhr.responseText);
-                L.geoJson(data, options).addTo(map);
+                target = L.geoJson(data, options).addTo(map);
             }
 
         }
     };
     xhr.send();
 };
+
+var postcodes, businesses;
 
 // loadGeoJsonLayer('./datasets/hx7.geojson', {
 //                     style: function (feature) {
@@ -43,7 +45,15 @@ var geojsonMarkerOptions = {
     opacity: 1,
     fillOpacity: 0.8
 };
-loadGeoJsonLayer('./layers/bizDist.geojson', {
+
+var mapLayers = {
+    "Postcodes": postcodes,
+    "Businesses": businesses
+};
+
+L.control.layers(null, mapLayers).addTo(map);
+
+loadGeoJsonLayer('./layers/bizDist.geojson', postcodes, {
                                 style: function (feature) {
                                     return {
                                         color: 'green',
@@ -58,7 +68,7 @@ loadGeoJsonLayer('./layers/bizDist.geojson', {
                                 }
                             });
 
-loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
+loadGeoJsonLayer('./layers/hebdenbiz.geojson', businesses, {
                                 style: function (feature) {
                                     return {
                                         color: 'blue',
@@ -71,4 +81,4 @@ loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
                                 pointToLayer: function(feature, latlng) {
                                     return L.circleMarker(latlng, geojsonMarkerOptions);
                                 }
-});
+                            });
