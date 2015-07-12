@@ -28,7 +28,7 @@ locatedBiz =
     active
         .filter(function(x) {return x.postcode in codepoint;})
         .map(function(x) {
-            var feature = codepoint[x.postcode];
+            var feature = JSON.parse(JSON.stringify(codepoint[x.postcode]));
             feature.geometry.coordinates.map(function(x) {return x + Math.random(0.1);});
             feature.properties = x;
             return feature;
