@@ -73,3 +73,14 @@ loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
                                     return L.circleMarker(latlng, geojsonMarkerOptions);
                                 }
                             });
+
+loadGeoJsonLayer('./layers/hx_postcode_area.geojson', {
+                                style: function (feature) {
+                                    return {
+                                        color: 'red',
+                                    };
+                                },
+                                onEachFeature: function ( feature, layer ) {
+                                    layer.bindPopup(feature.properties.name);
+                                }
+                            });
