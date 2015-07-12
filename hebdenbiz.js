@@ -57,3 +57,18 @@ loadGeoJsonLayer('./layers/bizDist.geojson', {
                                     return L.circleMarker(latlng, geojsonMarkerOptions);
                                 }
                             });
+
+loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
+                                style: function (feature) {
+                                    return {
+                                        color: 'blue',
+                                        radius: 1
+                                    };
+                                },
+                                onEachFeature: function ( feature, layer ) {
+                                    layer.bindPopup(feature.properties.name);
+                                },
+                                pointToLayer: function(feature, latlng) {
+                                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                                }
+});
