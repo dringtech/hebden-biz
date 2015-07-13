@@ -1,7 +1,5 @@
 {
-  "name": "datasets",
   "version": "1.0.0",
-  "description": "",
   "dependencies": {
     "gbify-geojson": "^0.1.1"
   },
@@ -10,5 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Giles Dring <giles@dringtech.com>",
-  "private": true
+  "private": true,
+  "license": "MIT",
+  "main": "company.js",
+  "name": "scripts"
 }
