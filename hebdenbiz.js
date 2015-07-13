@@ -44,11 +44,24 @@ var geojsonMarkerOptions = {
     fillOpacity: 0.8
 };
 
+loadGeoJsonLayer('./layers/hx_postcode_area.geojson', {
+                                style: function (feature) {
+                                    return {
+                                        color: 'red',
+                                    };
+                                },
+                                onEachFeature: function ( feature, layer ) {
+                                    layer.bindPopup(feature.properties.name);
+                                }
+                            });
+
 loadGeoJsonLayer('./layers/bizDist.geojson', {
                                 style: function (feature) {
                                     return {
                                         color: 'green',
-                                        radius: feature.properties.count
+                                        radius: feature.properties.count,
+                                        fillOpacity: 0.4,
+                                        stroke: 0
                                     };
                                 },
                                 onEachFeature: function (feature, layer) {
@@ -63,7 +76,9 @@ loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
                                 style: function (feature) {
                                     return {
                                         color: 'blue',
-                                        radius: 2
+                                        radius: 4,
+                                        fillOpacity: 0.4,
+                                        stroke: 0
                                     };
                                 },
                                 onEachFeature: function ( feature, layer ) {
@@ -71,16 +86,5 @@ loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
                                 },
                                 pointToLayer: function(feature, latlng) {
                                     return L.circleMarker(latlng, geojsonMarkerOptions);
-                                }
-                            });
-
-loadGeoJsonLayer('./layers/hx_postcode_area.geojson', {
-                                style: function (feature) {
-                                    return {
-                                        color: 'red',
-                                    };
-                                },
-                                onEachFeature: function ( feature, layer ) {
-                                    layer.bindPopup(feature.properties.name);
                                 }
                             });

@@ -30,7 +30,10 @@ locatedBiz = {
     features: active.filter(function(x) {return x.postcode in codepoint;})
         .map(function(x) {
             var feature = JSON.parse(JSON.stringify(codepoint[x.postcode]));
-            feature.geometry.coordinates.map(function(x) {return x + Math.random(0.1);});
+            var angle = Math.random()*2*Math.PI;
+            var r = Math.random()*0.0005;
+            feature.geometry.coordinates[0] += r*Math.random()*Math.sin(angle);
+            feature.geometry.coordinates[1] += 0.5*r*Math.cos(angle);
             feature.properties = x;
             return feature;
     })
