@@ -1,9 +1,31 @@
-var layer = new L.StamenTileLayer("watercolor");
+var watercolor = new L.StamenTileLayer("watercolor");
+var toner = new L.StamenTileLayer("toner");
+var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+var control = new L.control.layers({"Stamen Watercolor": watercolor, "Stamen Toner": toner, "Open Street Map": osm}, {}, {autoZIndex: false, collapsed: true});
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend');
+
+    div.innerHTML = '<h1>Legend:</h1><ul>'+
+      '<li><svg height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="green"></circle></svg>Summarised Business Data</li>'+
+      '<li><svg height="20" width="20" viewbox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="blue"></circle></svg>Individual Business Data</li>'+
+      '</ul>';
+    return div;
+};
+
 var map = new L.Map("map", {
     center: new L.LatLng(53.7416, -2.0175),
     zoom: 12
 });
-map.addLayer(layer);
+map.addLayer(watercolor);
+control.addTo(map);
+legend.addTo(map);
+map.attributionControl.addAttribution("Business data from <a href='https://opencorporates.com/'>OpenCorporates</a>");
 
 var loadGeoJsonLayer = function(src, options) {
     var xhr = new XMLHttpRequest();
@@ -14,13 +36,13 @@ var loadGeoJsonLayer = function(src, options) {
         var data;
         if (xhr.readyState == 4) {
             status = xhr.status;
-            console.log("it done!");
             if (status == 200) {
-                console.log("it success!");
                 data = JSON.parse(xhr.responseText);
-                L.geoJson(data, options).addTo(map);
+                var gj = L.geoJson(data, options);
+                gj.getAttribution = function() { return options.attribution; };
+                gj.addTo(map);
+                control.addOverlay(gj, options.name);
             }
-
         }
     };
     xhr.send();
@@ -45,17 +67,17 @@ var geojsonMarkerOptions = {
 };
 
 loadGeoJsonLayer('./layers/hx_postcode_area.geojson', {
+                                name: 'Postcode area',
+                                attribution: "Postcode area data from <a href='https://en.wikipedia.org/wiki/HX_postcode_area'>Wikipedia</a> (processed with <a href='http://mapbox.github.io/togeojson/'>toGeoJson</a>)",
                                 style: function (feature) {
                                     return {
                                         color: 'red',
                                     };
-                                },
-                                onEachFeature: function ( feature, layer ) {
-                                    layer.bindPopup(feature.properties.name);
                                 }
                             });
 
 loadGeoJsonLayer('./layers/bizDist.geojson', {
+                                name: 'Aggregated business data',
                                 style: function (feature) {
                                     return {
                                         color: 'green',
@@ -73,6 +95,7 @@ loadGeoJsonLayer('./layers/bizDist.geojson', {
                             });
 
 loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
+                                name: 'Individual business data',
                                 style: function (feature) {
                                     return {
                                         color: 'blue',
@@ -112,4 +135,3 @@ loadGeoJsonLayer('./layers/hebdenbiz.geojson', {
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
