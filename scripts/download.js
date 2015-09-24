@@ -1,4 +1,8 @@
-var company = require('./company')('companies.json');
+#!/usr/bin/env node
+
+var config = require('yamljs').load('config.yml');
+
+var company = require('./company')(config);
 
 company.download();
 

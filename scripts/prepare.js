@@ -1,5 +1,10 @@
-var company = require('./company')('../datasets/companies.json');
-var postcode = require('./postcode')('../datasets/postcode.json');
+#!/usr/bin/env node
+
+var yaml = require('yamljs');
+var config = yaml.load('config.yml');
+
+var company = require('./company')(config);
+var postcode = require('./postcode')(config);
 
 // postcode.parse('os/hx.csv');
 
@@ -42,8 +47,8 @@ locatedBiz = {
 var fs = require('fs');
 var errHandler = function errHandler(err) { if (err) throw err; };
 
-fs.writeFile('../layers/bizDist.geojson', JSON.stringify(postcodesWithBiz), errHandler);
-fs.writeFile('../layers/hebdenbiz.geojson', JSON.stringify(locatedBiz), errHandler);
+fs.writeFile('layers/bizDist.geojson', JSON.stringify(postcodesWithBiz), errHandler);
+fs.writeFile('layers/hebdenbiz.geojson', JSON.stringify(locatedBiz), errHandler);
 
 /*
  * The MIT License (MIT)

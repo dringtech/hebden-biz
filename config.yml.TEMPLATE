@@ -1,0 +1,6 @@
+opencorporatesQuery:
+  registered_address: HX7
+  api_token: XXXXXXXXXXXXXXXXXXXX
+datafile:
+  company: 'datasets/companies.json'
+  postcode: 'datasets/postcode.json'

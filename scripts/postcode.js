@@ -50,12 +50,12 @@ var loadData = function loadData() {
     postcodes = JSON.parse(fs.readFileSync(fileName, 'utf8'));
 };
 
-module.exports = function(fnam) {
-    fileName = fnam;
+module.exports = function(config) {
+    fileName = config.datafile.postcode;
     loadData();
     return {
         parse: parseData,
-        data: function() { return postcodes; } 
+        data: function() { return postcodes; }
     };
 };
 

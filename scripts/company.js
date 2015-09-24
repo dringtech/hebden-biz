@@ -1,11 +1,7 @@
-var http = require('http');
+var http = require('https');
 var fs = require('fs');
 
-var query = {
-    registered_address: "HX7",
-    // per_page: "100",
-};
-
+var query;
 var filename;
 var companies = [];
 
@@ -43,11 +39,18 @@ var downloadData = function() {
             companies = companies.concat(result.results.companies);
             var page = result.results.page;
             var total_pages = result.results.total_pages;
-            console.log('Page ' + page + ' of ' + total_pages);
-            fs.writeFile(filename, JSON.stringify(companies));
-            if (page !== total_pages) {
-                setTimeout(function() {getData(query.page + 1);}, delay);
-            }
+            fs.writeFile(filename, JSON.stringify(companies), function(err) {
+              if (err) {
+                console.error('Failed to write page ' + page);
+              } else {
+                console.log('Page ' + page + ' of ' + total_pages);
+                if (page !== total_pages) {
+                    setTimeout(function() {getData(query.page + 1);}, delay);
+                }
+              }
+            });
+        } else {
+          console.log('Returned "' + response.statusMessage + '" (' + response.statusCode + ')');
         }
       });
     };
@@ -72,8 +75,9 @@ var activeBusinesses = function(p) {
     });
 };
 
-module.exports = function(fnam) {
-    filename = fnam;
+module.exports = function(config) {
+    filename = config.datafile.company;
+    query = config.opencorporatesQuery;
     var persistent = {companies: []};
     loadData(persistent);
     return {
