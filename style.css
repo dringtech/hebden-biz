@@ -1,5 +1,9 @@
 html,body { height: 100%; margin: 0; padding: 0;}
 #map { height: 100%; }
+.legend { background: white; border-radius: 5px; padding: 6px 10px 6px 6px; box-shadow: 0 1px 5px rgba(0,0,0,0.4); }
+.legend h1 { margin: 0; font-size: 105%}
+.legend ul { list-style-type: none; padding: 0; margin: 0; }
+.legend svg { vertical-align: bottom; }
 /*
 The MIT License (MIT)
 
